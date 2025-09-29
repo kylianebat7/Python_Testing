@@ -1,36 +1,271 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Summary | GUDLFT Registration</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summary | GUDLFT Registration</title>
+
+  <style>
+    /* Reset léger */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    :root{
+      --bg: #f3f4f6;         /* gris clair */
+      --card: #ffffff;       /* fond des cartes */
+      --muted: #6b7280;      /* texte secondaire */
+      --accent: #2563eb;     /* bleu principal */
+      --accent-600: #1e40af; /* bleu foncé */
+      --danger: #ef4444;     /* rouge */
+      --shadow: 0 6px 18px rgba(16,24,40,0.06);
+      --radius: 12px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+                  Roboto, "Helvetica Neue", Arial;
+    }
+
+    html, body {
+      height: 100%;
+      background: linear-gradient(180deg, var(--bg), #eef2ff 100%);
+      color: #111827;
+    }
+
+    .container{
+      width: 100%;
+      max-width: 940px;
+      margin: 32px auto;
+      padding: 22px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), var(--card));
+      border-radius: calc(var(--radius) + 4px);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(15,23,42,0.03);
+      animation: fadeInUp .35s ease both;
+    }
+
+    .header{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .header h2{
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .logout-link{
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid rgba(16,24,40,0.06);
+      color: var(--accent-600);
+      font-weight: 600;
+      transition: all .18s ease;
+    }
+    .logout-link:hover{
+      background: rgba(37,99,235,0.08);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(37,99,235,0.06);
+    }
+
+    .error-messages{
+      margin-bottom: 16px;
+      background: linear-gradient(90deg, rgba(254,242,242,0.95), rgba(255,255,255,0.8));
+      border-left: 4px solid var(--danger);
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: #7f1d1d;
+      font-size: 0.96rem;
+    }
+    .error-messages ul { padding-left: 18px; }
+    .error-messages li { margin-bottom: 6px; }
+
+    .points{
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .points span{
+      display: inline-block;
+      margin-left: 8px;
+      font-weight: 700;
+      color: #0f172a;
+      background: rgba(37,99,235,0.06);
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(37,99,235,0.08);
+    }
+
+    .competitions-title{
+      margin-top: 8px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #0b1220;
+      font-size: 1.05rem;
+    }
+
+    .competitions-list{
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .competition-item{
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), #fff);
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid rgba(15,23,42,0.04);
+      box-shadow: 0 4px 16px rgba(2,6,23,0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .competition-item:hover{
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(2,6,23,0.06);
+    }
+    .competition-item[data-full="true"] {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .competition-item[data-full="true"] .book-link {
+      display: none;
+    }
+
+    .competition-name{
+      font-weight: 700;
+      font-size: 1rem;
+      color: #0b1220;
+      letter-spacing: -0.2px;
+    }
+    .competition-details{
+      font-size: 0.90rem;
+      color: var(--muted);
+    }
+
+    .book-link{
+      display: inline-block;
+      margin-top: 6px;
+      padding: 8px 12px;
+      background: linear-gradient(180deg,var(--accent),var(--accent-600));
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 10px;
+      text-align: center;
+      width: max-content;
+      transition: transform .12s ease, opacity .12s ease;
+    }
+    .book-link:active{ transform: translateY(1px); }
+    .book-link:hover{ opacity: 0.95; }
+
+    .points-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+    }
+    .points-table th,
+    .points-table td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+      color: #4a4a4a;
+    }
+    .points-table th {
+      background-color: #f0f0f0;
+      font-weight: 600;
+    }
+    .points-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+    .points-table tr:hover {
+      background-color: #e0e0e0;
+      transition: background-color 0.2s ease;
+    }
+
+    @media (max-width: 880px){
+      .competitions-list{
+        grid-template-columns: 1fr;
+      }
+      .container{
+        margin: 20px;
+        padding: 18px;
+      }
+      .points-table th,
+      .points-table td {
+        padding: 8px;
+      }
+    }
+
+    @keyframes fadeInUp{
+      from{ opacity: 0; transform: translateY(8px); }
+      to{ opacity: 1; transform: translateY(0); }
+    }
+
+    a:focus {
+      outline: 3px solid rgba(37,99,235,0.14);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
-        <h2>Welcome, {{club['email']}} </h2><a href="{{url_for('logout')}}">Logout</a>
+  <div class="container">
+    <div class="header">
+      <h2>Welcome, {{club['email']}}</h2>
+      <a href="{{url_for('logout')}}" class="logout-link">Logout</a>
+    </div>
 
-    {% with messages = get_flashed_messages()%}
+    {% with messages = get_flashed_messages() %}
     {% if messages %}
-        <ul>
-       {% for message in messages %}
-            <li>{{message}}</li>
+    <div class="error-messages">
+      <ul>
+        {% for message in messages %}
+        <li>{{message}}</li>
         {% endfor %}
-       </ul>
-    {% endif%}
-    Points available: {{club['points']}}
-    <h3>Competitions:</h3>
-    <ul>
-        {% for comp in competitions%}
-        <li>
-            {{comp['name']}}<br />
-            Date: {{comp['date']}}</br>
-            Number of Places: {{comp['numberOfPlaces']}}
-            {%if comp['numberOfPlaces']|int >0%}
-            <a href="{{ url_for('book',competition=comp['name'],club=club['name']) }}">Book Places</a>
-            {%endif%}
-        </li>
-        <hr />
-        {% endfor %}
-    </ul>
-    {%endwith%}
+      </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
 
+    <p class="points">Points available: <span>{{club['points']}}</span></p>
+
+    <h3 class="competitions-title">Competitions:</h3>
+    <ul class="competitions-list">
+      {% for comp in competitions %}
+      <li class="competition-item" {% if comp['numberOfPlaces']|int == 0 %} data-full="true"{% endif %}>
+        <div class="competition-name">{{comp['name']}}</div>
+        <div class="competition-details">Date: {{comp['date']}}</div>
+        <div class="competition-details">Number of Places: {{comp['numberOfPlaces']}}</div>
+        {% if comp['numberOfPlaces']|int > 0 %}
+        <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" class="book-link">Book Places</a>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h3 class="competitions-title">Clubs Points Table</h3>
+    <table class="points-table">
+      <tr>
+        <th>Club Name</th>
+        <th>Points</th>
+      </tr>
+      {% for c in clubs %}
+      <tr>
+        <td>{{ c['name'] }}</td>
+        <td>{{ c['points'] }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
 </body>
 </html>

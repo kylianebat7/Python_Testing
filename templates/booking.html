@@ -1,17 +1,24 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking for {{competition['name']}} || GUDLFT</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <h2>{{competition['name']}}</h2>
-    Places available: {{competition['numberOfPlaces']}}
-    <form action="/purchasePlaces" method="post">
-        <input type="hidden" name="club" value="{{club['name']}}">
-        <input type="hidden" name="competition" value="{{competition['name']}}">
-        <label for="places">How many places?</label><input type="number" name="places" id=""/>
-        <button type="submit">Book</button>
-    </form>
+<body class="min-h-screen flex flex-col items-center p-6 bg-gradient-to-b from-gray-50 to-gray-200">
+    <div class="container">
+        <h2 class="text-3xl">{{competition['name']}}</h2>
+        <p class="places">Places available: <span>{{competition['numberOfPlaces']}}</span></p>
+        <form action="/purchasePlaces" method="post" class="form">
+            <input type="hidden" name="club" value="{{club['name']}}">
+            <input type="hidden" name="competition" value="{{competition['name']}}">
+            <div class="form-group">
+                <label for="places" class="form-label">How many places?</label>
+                <input type="number" name="places" id="places" class="form-input" placeholder="Enter number of places" min="1" required>
+            </div>
+            <button type="submit" class="form-button">Book Now</button>
+        </form>
+    </div>
 </body>
 </html>

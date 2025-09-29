@@ -155,7 +155,7 @@
       display: inline-block;
       margin-top: 6px;
       padding: 8px 12px;
-      background: linear-gradient(180deg,var(--accent),var(--accent-600));
+      background: linear-gradient(180deg, var(--accent), var(--accent-600));
       color: #fff;
       font-weight: 700;
       text-decoration: none;
@@ -221,8 +221,8 @@
 <body>
   <div class="container">
     <div class="header">
-      <h2>Welcome, {{club['email']}}</h2>
-      <a href="{{url_for('logout')}}" class="logout-link">Logout</a>
+      <h2>Welcome, {{ club['email'] }}</h2>
+      <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
     </div>
 
     {% with messages = get_flashed_messages() %}
@@ -230,27 +230,31 @@
     <div class="error-messages">
       <ul>
         {% for message in messages %}
-        <li>{{message}}</li>
+        <li>{{ message }}</li>
         {% endfor %}
       </ul>
     </div>
     {% endif %}
     {% endwith %}
 
-    <p class="points">Points available: <span>{{club['points']}}</span></p>
+    <p class="points">Points available: <span>{{ club['points'] }}</span></p>
 
     <h3 class="competitions-title">Competitions:</h3>
     <ul class="competitions-list">
-      {% for comp in competitions %}
-      <li class="competition-item" {% if comp['numberOfPlaces']|int == 0 %} data-full="true"{% endif %}>
-        <div class="competition-name">{{comp['name']}}</div>
-        <div class="competition-details">Date: {{comp['date']}}</div>
-        <div class="competition-details">Number of Places: {{comp['numberOfPlaces']}}</div>
-        {% if comp['numberOfPlaces']|int > 0 %}
-        <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" class="book-link">Book Places</a>
-        {% endif %}
-      </li>
-      {% endfor %}
+      {% if competitions %}
+        {% for comp in competitions %}
+        <li class="competition-item" {% if comp['numberOfPlaces']|int == 0 %} data-full="true"{% endif %}>
+          <div class="competition-name">{{ comp['name'] }}</div>
+          <div class="competition-details">Date: {{ comp['date'] }}</div>
+          <div class="competition-details">Number of Places: {{ comp['numberOfPlaces'] }}</div>
+          {% if comp['numberOfPlaces']|int > 0 %}
+          <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" class="book-link">Book Places</a>
+          {% endif %}
+        </li>
+        {% endfor %}
+      {% else %}
+        <p class="competition-details">No upcoming competitions available.</p>
+      {% endif %}
     </ul>
 
     <h3 class="competitions-title">Clubs Points Table</h3>

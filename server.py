@@ -10,13 +10,14 @@ def loadClubs():
 def loadCompetitions():
     with open('competitions.json') as comps:
         listOfCompetitions = json.load(comps)['competitions']
-        # Filtrer les compétitions à venir (date > aujourd'hui)
-        current_date = datetime.strptime("2025-09-29 11:05:00", "%Y-%m-%d %H:%M:%S")
+        # Filtrer les compétitions à venir (date > heure actuelle)
+        current_date = datetime.now()  # Utilise l'heure actuelle au lieu d'une date fixe
         return [comp for comp in listOfCompetitions if datetime.strptime(comp['date'], "%Y-%m-%d %H:%M:%S") > current_date]
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
+# Charger les données au démarrage
 competitions = loadCompetitions()
 clubs = loadClubs()
 
@@ -67,7 +68,7 @@ def purchasePlaces():
         competition['numberOfPlaces'] = str(competitionPlaces - placesRequired)
         club['points'] = str(clubPoints - placesRequired)
         flash('Great-booking complete! {} places booked.'.format(placesRequired))
-        # Sauvegarde des changements dans les fichiers JSON (optionnel, pour persistance)
+        # Sauvegarde des changements dans les fichiers JSON
         with open('clubs.json', 'w') as c:
             json.dump({'clubs': clubs}, c)
         with open('competitions.json', 'w') as comps:

@@ -1,1 +1,14 @@
-{"competitions": [{"name": "Spring Festival 2026", "date": "2026-03-27 10:00:00", "numberOfPlaces": "23"}, {"name": "Fall Classic 2026", "date": "2026-10-22 13:30:00", "numberOfPlaces": "13"}]}
+{
+    "competitions": [
+        {
+            "name": "Spring Festival 2026",
+            "date": "2026-06-15 12:00:00",
+            "numberOfPlaces": "21"
+        },
+        {
+            "name": "Fall Classic 2026",
+            "date": "2026-12-11 13:30:00",
+            "numberOfPlaces": "13"
+        }
+    ]
+}

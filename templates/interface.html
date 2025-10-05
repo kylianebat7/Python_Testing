@@ -530,6 +530,49 @@
             border-bottom: none;
         }
 
+        /* History Stats */
+        .history-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            opacity: 0.9;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
         /* History Grid */
         .history-grid {
             display: grid;
@@ -821,6 +864,22 @@
                 <p>Toutes vos réservations passées</p>
             </div>
             {% if bookings %}
+                <div class="history-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-list-ul"></i>
+                        <div>
+                            <span class="stat-value">{{ bookings|length }}</span>
+                            <span class="stat-label">Réservation(s)</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-ticket-alt"></i>
+                        <div>
+                            <span class="stat-value">{{ bookings|sum(attribute='places') }}</span>
+                            <span class="stat-label">Place(s) totale(s)</span>
+                        </div>
+                    </div>
+                </div>
                 <ul class="history-grid">
                     {% for booking in bookings|reverse %}
                         <li class="history-card">

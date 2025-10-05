@@ -3,21 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking for {{competition['name']}} || GUDLFT</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Booking | GUDLFT Registration</title>
+    <style>
+        :root {
+            --primary-color:#4a90e2;
+            --accent:#2ecc71;
+            --shadow:0 10px 30px rgba(0,0,0,.12);
+            --radius:16px;
+        }
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: linear-gradient(135deg,#eef3f7,#d7e1ec); 
+            margin: 0; 
+            padding: 30px; 
+            color:#2d3436;
+        }
+        .container { max-width: 560px; margin: 0 auto; background: #fff; padding: 28px; border-radius: var(--radius); box-shadow: var(--shadow); animation: fadeIn .5s ease both; }
+        @keyframes fadeIn{from{opacity:0;transform: translateY(12px)}to{opacity:1;transform:none}}
+        .header { text-align: center; margin-bottom: 8px; }
+        .header h2{ margin:0; color:var(--primary-color)}
+        .meta{ text-align:center; color:#6b7280; margin-bottom:18px }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 8px; font-weight:600 }
+        input[type="number"]{ width: 100%; padding: 12px 14px; border-radius: 12px; border:1px solid #e5e7eb; outline:none; font-size:15px }
+        input[type="number"]:focus{ border-color:var(--primary-color); box-shadow:0 0 0 4px rgba(74,144,226,.15) }
+        .actions{ display:flex; gap:12px; justify-content:center; margin-top:12px }
+        .btn{ padding: 12px 18px; border:none; border-radius:999px; cursor:pointer; font-weight:600; transition:.2s }
+        .btn-primary{ background:var(--primary-color); color:#fff }
+        .btn-primary:hover{ filter:brightness(.92); transform: translateY(-1px) }
+        .btn-ghost{ background:#f3f4f6 }
+        .btn-ghost:hover{ background:#eaecf0 }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-6 bg-gradient-to-b from-gray-50 to-gray-200">
+<body>
     <div class="container">
-        <h2 class="text-3xl">{{competition['name']}}</h2>
-        <p class="places">Places available: <span>{{competition['numberOfPlaces']}}</span></p>
-        <form action="/purchasePlaces" method="post" class="form">
-            <input type="hidden" name="club" value="{{club['name']}}">
-            <input type="hidden" name="competition" value="{{competition['name']}}">
+        <div class="header">
+            <h2>{{ competition['name'] }}</h2>
+        </div>
+        <div class="meta">Places available: <strong>{{ competition['numberOfPlaces'] }}</strong></div>
+        <form method="POST" action="{{ url_for('purchasePlaces') }}">
+            <input type="hidden" name="competition" value="{{ competition['name'] }}">
+            <input type="hidden" name="club" value="{{ club['name'] }}">
             <div class="form-group">
-                <label for="places" class="form-label">How many places?</label>
-                <input type="number" name="places" id="places" class="form-input" placeholder="Enter number of places" min="1" required>
+                <label for="places">How many places?</label>
+                <input type="number" id="places" name="places" min="1" max="{{ competition['numberOfPlaces'] }}" required>
             </div>
-            <button type="submit" class="form-button">Book Now</button>
+            <div class="actions">
+                <button type="button" onclick="history.back()" class="btn btn-ghost">Cancel</button>
+                <button type="submit" class="btn btn-primary">Book</button>
+            </div>
         </form>
     </div>
 </body>

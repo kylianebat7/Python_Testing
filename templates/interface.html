@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | GUDLFT Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: var(--dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: backgroundMove 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes backgroundMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            animation: slideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 2rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            border: 3px solid rgba(255,255,255,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .user-info h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-info p {
+            font-size: 0.875rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-logout {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Messages Flash */
+        .messages {
+            margin: 2rem 2.5rem;
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left: 4px solid var(--danger);
+            border-radius: var(--radius-md);
+            color: #991b1b;
+            animation: slideDown 0.4s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .messages i {
+            font-size: 1.5rem;
+        }
+
+        /* Tabs Navigation */
+        .tabs-container {
+            padding: 0 2.5rem;
+            background: var(--light);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-button {
+            padding: 1.25rem 1.75rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        .tab-button i {
+            font-size: 1.1rem;
+        }
+
+        .tab-button::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .tab-button:hover {
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+        }
+
+        .tab-button.active::after {
+            transform: scaleX(1);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 2.5rem;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+        }
+
+        .section-header h3 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        /* Competitions Grid */
+        .competitions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .competition-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .competition-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .competition-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .competition-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .competition-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .competition-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .competition-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .competition-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .detail-item i {
+            width: 20px;
+            color: var(--primary);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .btn-book {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            text-align: center;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Points Display */
+        .points-display {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius-lg);
+            padding: 3rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .points-display::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: rotateBackground 30s linear infinite;
+        }
+
+        @keyframes rotateBackground {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .points-value {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .points-label {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Table */
+        .table-container {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .table thead th {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            color: white;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .table tbody td {
+            padding: 1.25rem 1.5rem;
+            color: var(--dark);
+        }
+
+        .table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        /* History Grid */
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .history-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .history-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent), var(--primary));
+            border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+        }
+
+        .history-card:hover {
+            transform: translateX(8px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .history-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .history-badge {
+            padding: 0.375rem 0.75rem;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .history-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .history-item i {
+            width: 16px;
+            color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-state h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1.5rem;
+            }
+
+            .header-content {
+                width: 100%;
+            }
+
+            .tabs-container {
+                padding: 0 1rem;
+            }
+
+            .tab-content {
+                padding: 1.5rem;
+            }
+
+            .competitions-grid,
+            .history-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .points-value {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h2>{{ club['name'] }}</h2>
+                    <p>{{ club['email'] }}</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Déconnexion
+                </a>
+            </div>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="messages">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <div>
+                        {% for message in messages %}
+                            <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Tabs Navigation -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="competitions">
+                    <i class="fas fa-trophy"></i>
+                    Compétitions
+                </button>
+                <button class="tab-button" data-tab="points">
+                    <i class="fas fa-coins"></i>
+                    Mes Points
+                </button>
+                <button class="tab-button" data-tab="clubs">
+                    <i class="fas fa-users"></i>
+                    Classement Clubs
+                </button>
+                <button class="tab-button" data-tab="history">
+                    <i class="fas fa-history"></i>
+                    Historique
+                </button>
+            </div>
+        </div>
+
+        <!-- Tab: Competitions -->
+        <div class="tab-content active" id="competitions">
+            <div class="section-header">
+                <h3>Compétitions à Venir</h3>
+                <p>Réservez vos places pour les prochaines compétitions</p>
+            </div>
+            <ul class="competitions-grid">
+                {% for comp in competitions %}
+                    <li class="competition-card">
+                        <div class="competition-header">
+                            <div>
+                                <h4 class="competition-title">{{ comp['name'] }}</h4>
+                            </div>
+                            <div class="competition-icon">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                        </div>
+                        <div class="competition-details">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>{{ comp['date'] }}</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-chair"></i>
+                                <span>{{ comp['numberOfPlaces'] }} places disponibles</span>
+                            </div>
+                        </div>
+                        {% if comp.get('isPast') %}
+                            <span class="badge badge-danger">
+                                <i class="fas fa-lock"></i>
+                                Fermée
+                            </span>
+                        {% elif comp['numberOfPlaces']|int > 0 %}
+                            {% if comp['numberOfPlaces']|int < 5 %}
+                                <div style="margin-bottom: 1rem;">
+                                    <span class="badge badge-warning">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        Dernières places !
+                                    </span>
+                                </div>
+                            {% else %}
+                                <div style="margin-bottom: 1rem;">
+                                    <span class="badge badge-success">
+                                        <i class="fas fa-check-circle"></i>
+                                        Disponible
+                                    </span>
+                                </div>
+                            {% endif %}
+                            <a href="{{ url_for('book', competition=comp['name'], club=club['name']) }}" class="btn-book">
+                                <i class="fas fa-ticket-alt"></i> Réserver des places
+                            </a>
+                        {% else %}
+                            <span class="badge badge-danger">
+                                <i class="fas fa-times-circle"></i>
+                                Complet
+                            </span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Tab: Points -->
+        <div class="tab-content" id="points">
+            <div class="section-header">
+                <h3>Vos Points</h3>
+                <p>Utilisez vos points pour réserver des places</p>
+            </div>
+            <div class="points-display">
+                <div class="points-value">{{ club['points'] }}</div>
+                <div class="points-label">Points Disponibles</div>
+            </div>
+        </div>
+
+        <!-- Tab: Clubs Table -->
+        <div class="tab-content" id="clubs">
+            <div class="section-header">
+                <h3>Classement des Clubs</h3>
+                <p>Points disponibles pour chaque club</p>
+            </div>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-hashtag"></i> Rang</th>
+                            <th><i class="fas fa-trophy"></i> Club</th>
+                            <th><i class="fas fa-coins"></i> Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in clubs|sort(attribute='points', reverse=true) %}
+                            <tr {% if c['name'] == club['name'] %}style="background: rgba(99, 102, 241, 0.1); font-weight: 600;"{% endif %}>
+                                <td>{{ loop.index }}</td>
+                                <td>
+                                    {% if c['name'] == club['name'] %}
+                                        <i class="fas fa-star" style="color: var(--warning); margin-right: 0.5rem;"></i>
+                                    {% endif %}
+                                    {{ c['name'] }}
+                                </td>
+                                <td>{{ c['points'] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: History -->
+        <div class="tab-content" id="history">
+            <div class="section-header">
+                <h3>Historique des Réservations</h3>
+                <p>Toutes vos réservations passées</p>
+            </div>
+            {% if bookings %}
+                <ul class="history-grid">
+                    {% for booking in bookings|reverse %}
+                        <li class="history-card">
+                            <div class="history-header">
+                                <h4 class="history-title">{{ booking['competition_name'] }}</h4>
+                                <span class="history-badge">{{ booking['category']|default('N/A') }}</span>
+                            </div>
+                            <div class="history-details">
+                                <div class="history-item">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    <span>{{ booking['places'] }} place(s) réservée(s)</span>
+                                </div>
+                                <div class="history-item">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span>{{ booking['date_booked'] }}</span>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h4>Aucune réservation</h4>
+                    <p>Vous n'avez pas encore effectué de réservation</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab-button');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    const targetId = tab.getAttribute('data-tab');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

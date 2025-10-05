@@ -4,3 +4,8 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 Werkzeug==1.0.1
+
+# Dépendances de test
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-flask>=1.2.0

@@ -26,6 +26,14 @@ def saveBookings(bookings):
     with open('bookings.json', 'w') as b:
         json.dump({'bookings': bookings}, b)
 
+def saveClubs(clubs):
+    with open('clubs.json', 'w') as c:
+        json.dump({'clubs': clubs}, c, indent=2)
+
+def saveCompetitions(competitions):
+    with open('competitions.json', 'w') as comps:
+        json.dump({'competitions': competitions}, comps, indent=2)
+
 # Permet de rafraîchir la liste des compétitions depuis le fichier JSON
 def refresh_competitions():
     global competitions
@@ -115,6 +123,11 @@ def purchasePlaces():
     if placesRequired <= 0:
         flash('Number of places must be greater than 0.')
         return redirect(url_for('interface', email=club['email']))
+    
+    # Limite maximale de 12 places par réservation
+    if placesRequired > 12:
+        flash('You cannot book more than 12 places per competition.')
+        return redirect(url_for('interface', email=club['email']))
 
     # Vérifier le stock disponible
     try:
@@ -124,22 +137,39 @@ def purchasePlaces():
     if placesRequired > available:
         flash('Not enough places available for this competition.')
         return redirect(url_for('interface', email=club['email']))
-    if club['points'] >= placesRequired:
-        competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
-        club['points'] = club['points'] - placesRequired
-        # Enregistrer la réservation dans l'historique
-        new_booking = {
-            'club_name': club['name'],
-            'competition_name': competition['name'],
-            'category': competition.get('category', 'Unknown'),  # Ajoute une catégorie si disponible
-            'places': placesRequired,
-            'date_booked': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        }
-        bookings.append(new_booking)
-        saveBookings(bookings)
-        flash('Great-booking complete!')
-    else:
+    # Vérifier que le club a suffisamment de points
+    if club['points'] < placesRequired:
         flash('Not enough points to complete the booking.')
+        return redirect(url_for('interface', email=club['email']))
+    
+    # Effectuer la réservation avec vérification de sécurité
+    competition['numberOfPlaces'] = int(competition['numberOfPlaces']) - placesRequired
+    club['points'] = club['points'] - placesRequired
+    
+    # Vérification de sécurité : les points ne doivent jamais être négatifs
+    if club['points'] < 0:
+        flash('Error: Invalid points calculation. Please contact support.')
+        # Annuler la transaction
+        competition['numberOfPlaces'] = int(competition['numberOfPlaces']) + placesRequired
+        club['points'] = club['points'] + placesRequired
+        return redirect(url_for('interface', email=club['email']))
+    
+    # Enregistrer la réservation dans l'historique
+    new_booking = {
+        'club_name': club['name'],
+        'competition_name': competition['name'],
+        'category': competition.get('category', 'Unknown'),
+        'places': placesRequired,
+        'date_booked': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+    bookings.append(new_booking)
+    
+    # Sauvegarder toutes les modifications
+    saveBookings(bookings)
+    saveClubs(clubs)
+    saveCompetitions(competitions)
+    
+    flash('Great-booking complete!')
     return redirect(url_for('interface', email=club['email']))
 
 @app.route('/view_section/<section>/<email>')

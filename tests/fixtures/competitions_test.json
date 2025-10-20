@@ -1,0 +1,19 @@
+{
+  "competitions": [
+    {
+      "name": "Competition Test 1", 
+      "date": "2026-08-15 14:00:00", 
+      "numberOfPlaces": "25"
+    },
+    {
+      "name": "Competition Test 2", 
+      "date": "2026-12-20 10:30:00", 
+      "numberOfPlaces": "10"
+    },
+    {
+      "name": "Competition Passee", 
+      "date": "2024-01-15 12:00:00", 
+      "numberOfPlaces": "0"
+    }
+  ]
+}
